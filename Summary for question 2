@@ -1,0 +1,5 @@
+                                      Summary
+Peterson's N Algorithm ensures that multiple processes can safely share a resource without conflicts.
+The flags and turn arrays implement the logic for mutual exclusion and bounded waiting.
+Visualization helps understand the flow: yellow for waiting, green for accessing, and white for idle.
+The GameManager.cs ties everything together, creating processes and simulating their behavior.
