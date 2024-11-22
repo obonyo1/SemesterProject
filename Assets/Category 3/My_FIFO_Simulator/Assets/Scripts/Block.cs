@@ -26,7 +26,7 @@ public class Block : MonoBehaviour
             Debug.LogError("Image component not found on this GameObject!");
         }
     }
-
+    
     public void UpdateBlock(string number, Color textColor, Color bgColor)
     {
         blockText.text = number;
