@@ -5,10 +5,15 @@ public class BlockManager : MonoBehaviour
 {
     public Block[] blocks;  // Array to hold the blocks
     public int maxBlocks = 5;  // Maximum number of blocks in the queue
+     private int hitCounter = 0;  // Tracks the number of hits
+    private int missCounter = 0;  // Tracks the number of misses
 
     public TextMeshProUGUI lastPressText;  // Displays the last pressed number
     public TextMeshProUGUI emptySlotText;  // Displays empty slot messages
     public TextMeshProUGUI alreadyExistsText;  // Displays already exists messages
+
+    public TextMeshProUGUI hitCount;
+    public TextMeshProUGUI missCount;
     public AudioSource alreadyExistsSound;  // Plays 8-bit sound for already exists
     public AudioSource backgroundSound;
     public AudioSource clickSound;
@@ -30,6 +35,9 @@ public class BlockManager : MonoBehaviour
         emptySlotText.text = "";
         alreadyExistsText.text = "";
         lastPressText.text = "";
+        hitCount.text="0";
+        missCount.text="0";
+
   // Set initial volumes
         defaultBackgroundVolume = 0.2f; // Lower background volume
         backgroundSound.volume = defaultBackgroundVolume;
@@ -72,6 +80,8 @@ public class BlockManager : MonoBehaviour
             {
                 alreadyExistsText.text = $"Number {number} already exists!";
                 PlaySound(alreadyExistsSound);  // Play already exists sound
+                hitCounter++;  // Increment hit count
+                hitCount.text = hitCounter.ToString();  // Update UI
                 return;
             }
         }
@@ -84,6 +94,8 @@ public class BlockManager : MonoBehaviour
                 block.UpdateBlock(number, Color.green, Color.cyan);  // Add to the first empty block
                 PlaySound(clickSound);  // Play click sound
                 emptySlotText.text = "There is an empty slot, no replacement expected.";
+                missCounter++;  // Increment miss count
+                missCount.text = missCounter.ToString();  // Update UI
                 return;
             }
         }
@@ -96,6 +108,8 @@ public class BlockManager : MonoBehaviour
         if (oldestBlock != null)
         {
             oldestBlock.UpdateBlock(number, Color.green, Color.cyan);  // Update oldest block with new value
+            missCounter++;  // Increment miss count
+            missCount.text = missCounter.ToString();  // Update UI
             PlaySound(clickSound);  // Play click sound
         }
 
@@ -166,9 +180,15 @@ public class BlockManager : MonoBehaviour
         {
             sound.Play();
         }
-
-
-
+        // Restore background sound volume after playback ends
+        StartCoroutine(RestoreBackgroundVolume(sound.clip.length));
     }
 
+    private System.Collections.IEnumerator RestoreBackgroundVolume(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        backgroundSound.volume = defaultBackgroundVolume;
+    }
 }
+
+
