@@ -88,7 +88,7 @@ public class BlockManager : MonoBehaviour
             }
         }
 
-        // If no empty slot, replace the oldest block
+        // If no empty slot, replace the oldest block!
         emptySlotText.text = "";  // Clear the empty slot message
         Block oldestBlock = GetOldestBlock();
         Block secondOldestBlock = GetSecondOldestBlock();
@@ -154,7 +154,7 @@ public class BlockManager : MonoBehaviour
 
         return secondOldestBlock;
     }
-    
+
 //for sound
 
   private void PlaySound(AudioSource sound)
